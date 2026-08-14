@@ -13,7 +13,7 @@ Board::Board(int width, int height, int minesCount) {
     //    - 地雷數 (minesCount) 必須大於 0。
     //    - 地雷數不能大於或等於總格子數 (width * height)。
     //    - 如果任何一個條件不符合，拋出 std::invalid_argument("例外原因說明...")。
-    if(width > 0 && height > 0 && minesCount > 0 && (width * height) >= minesCount) throw std::invalid_argument("width, height, minesCount 參數錯誤");
+    if(width <= 0 || height <= 0 || minesCount <= 0 || (width * height) >= minesCount) throw std::invalid_argument("width, height, minesCount 參數錯誤");
     //
     // 2. 將屬性 (this->width, this->height, this->minesCount) 設定為傳入的值。
     //    - 將 isGameOver 設為 false。
@@ -35,7 +35,7 @@ Board::Board(int width, int height, int minesCount) {
     for(int y=0; y<width; y++){
         grid[y].reserve(height);
         for(int x=0; x<height; x++){
-            grid[y].push_back(Cell(x, y));
+            grid[y].push_back(Cell(y, x));
         }
     }
 
@@ -89,7 +89,7 @@ void Board::placeMines(int startX, int startY) {
     std::vector<std::pair<int, int>> v;
     for(int y = 0; y<width; y++){
         for(int x = 0; x<height; x++){
-            if(y != startY && x != startX){
+            if(y != startY || x != startX){
                 v.push_back({y, x});
             }
         }
