@@ -8,12 +8,12 @@
 // ==========================================
 Cell::Cell() {
     // 1. 初始化成員變數：
-    //    x = 0;
-    //    y = 0;
-    //    isMine = false;
-    //    isRevealed = false;
-    //    isFlagged = false;
-    //    neighborMinesCount = 0;
+    x = 0;
+    y = 0;
+    isMine = false;
+    isRevealed = false;
+    isFlagged = false;
+    neighborMinesCount = 0;
 }
 
 // ==========================================
@@ -23,12 +23,12 @@ Cell::Cell() {
 // ==========================================
 Cell::Cell(int x, int y) {
     // 1. 初始化成員變數：
-    //    this->x = x;
-    //    this->y = y;
-    //    isMine = false;
-    //    isRevealed = false;
-    //    isFlagged = false;
-    //    neighborMinesCount = 0;
+    this->x = x;
+    this->y = y;
+    isMine = false;
+    isRevealed = false;
+    isFlagged = false;
+    neighborMinesCount = 0;
 }
 
 // ==========================================
@@ -38,46 +38,49 @@ Cell::Cell(int x, int y) {
 
 int Cell::getX() const {
     // 回傳格子 x 座標
-    return 0;
+    return x;
 }
 
 int Cell::getY() const {
     // 回傳格子 y 座標
-    return 0;
+    return y;
 }
 
 bool Cell::getIsMine() const {
     // 回傳該格子是否為地雷
-    return false;
+    return isMine;
 }
 
 void Cell::setIsMine(bool val) {
-    // 設定該格子是否為地雷
+    isMine = val;
 }
 
 bool Cell::getIsRevealed() const {
     // 回傳該格子是否已被翻開
-    return false;
+    return isRevealed;
 }
 
 void Cell::setIsRevealed(bool val) {
     // 設定該格子已被翻開
+    isRevealed = val;
 }
 
 bool Cell::getIsFlagged() const {
     // 回傳該格子是否已被插旗標記
-    return false;
+    return isFlagged;
 }
 
 void Cell::setIsFlagged(bool val) {
     // 設定該格子已被插旗標記
+    isFlagged = val;
 }
 
 int Cell::getNeighborMinesCount() const {
     // 回傳該格子鄰近 8 格的地雷數
-    return 0;
+    return neighborMinesCount;
 }
 
 void Cell::setNeighborMinesCount(int val) {
     // 設定該格子鄰近 8 格的地雷數
+    neighborMinesCount = val;
 }

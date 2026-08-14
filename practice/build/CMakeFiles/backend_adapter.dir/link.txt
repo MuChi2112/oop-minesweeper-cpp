@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/backend_adapter.dir/src/Cell.cpp.o CMakeFiles/backend_adapter.dir/src/Board.cpp.o CMakeFiles/backend_adapter.dir/src/adapter.cpp.o -o backend_adapter  /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/x86_64-linux-gnu/libssl.so /usr/lib/x86_64-linux-gnu/libcrypto.so 

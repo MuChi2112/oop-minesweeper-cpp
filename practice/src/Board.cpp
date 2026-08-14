@@ -13,15 +13,32 @@ Board::Board(int width, int height, int minesCount) {
     //    - 地雷數 (minesCount) 必須大於 0。
     //    - 地雷數不能大於或等於總格子數 (width * height)。
     //    - 如果任何一個條件不符合，拋出 std::invalid_argument("例外原因說明...")。
+    if(width > 0 && height > 0 && minesCount > 0 && (width * height) >= minesCount) throw std::invalid_argument("width, height, minesCount 參數錯誤");
     //
     // 2. 將屬性 (this->width, this->height, this->minesCount) 設定為傳入的值。
     //    - 將 isGameOver 設為 false。
     //    - 將 isGameWon 設為 false。
     //    - 將 isInitialized 設為 false (因為第一次點擊前還不隨機擺放地雷)。
+    this->width = width;
+    this->height = height;
+    this->minesCount = minesCount;
+    isGameOver = false;
+    isGameWon = false;
+    isInitialized = false;
+
     //
     // 3. 重塑 grid 的大小，並為其填充 Cell。
     //    - grid 的型態是 std::vector<std::vector<Cell>>。
     //    - grid[y][x] 代表位於 (x, y) 座標的格子，建構 Cell 時請記得將 x, y 傳入。
+    
+    grid.resize(width);
+    for(int y=0; y<width; y++){
+        grid[y].reserve(height);
+        for(int x=0; x<height; x++){
+            grid[y].push_back(Cell(x, y));
+        }
+    }
+
 }
 
 int Board::getWidth() const {
@@ -49,16 +66,17 @@ const Cell& Board::getCell(int x, int y) const {
     // 1. 檢查 x, y 座標是否越界 (x < 0 || x >= width || y < 0 || y >= height)。
     // 2. 如果越界，拋出 std::out_of_range("...") 例外。
     // 3. 如果合法，回傳 grid[y][x] 的常數參照。
-    static Cell dummy;
-    return dummy;
+    if(x < 0 || x >= width || y < 0 || y >= height) throw std::out_of_range("out_of_range");
+    return grid[y][x];
+
 }
 
 Cell& Board::getCell(int x, int y) {
     // 1. 檢查 x, y 座標是否越界 (x < 0 || x >= width || y < 0 || y >= height)。
     // 2. 如果越界，拋出 std::out_of_range("...") 例外。
     // 3. 如果合法，回傳 grid[y][x] 的參照。
-    static Cell dummy;
-    return dummy;
+    if(x < 0 || x >= width || y < 0 || y >= height) throw std::out_of_range("out_of_range");
+    return grid[y][x];
 }
 
 // ==========================================
@@ -68,12 +86,28 @@ Cell& Board::getCell(int x, int y) {
 void Board::placeMines(int startX, int startY) {
     // 1. 建立一個包含所有格子座標 (x, y) 的一維清單，排除起點座標 (startX, startY)
     //    (可選：也排除起點周圍的 8 個鄰近格子，這樣第一步可以點出一大片空地，體驗更好)。
+    std::vector<std::pair<int, int>> v;
+    for(int y = 0; y<width; y++){
+        for(int x = 0; x<height; x++){
+            if(y != startY && x != startX){
+                v.push_back({y, x});
+            }
+        }
+    }
     //
     // 2. 對清單進行隨機洗牌 (Random Shuffle)。
     //    - 提示：可以使用 std::random_device 與 std::mt19937 作為亂數引擎，配合 std::shuffle。
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(v.begin(), v.end(), g);
     //
     // 3. 取出隨機洗牌後的前 minesCount 個座標，將其設定為地雷。
     //    - 對每個選中的座標，呼叫其對應 Cell 的 setIsMine(true)。
+    for(int i=0; i<minesCount; i++){
+        int y = v[i].first;
+        int x = v[i].second;
+        grid[y][x].setIsMine(true);
+    }
 }
 
 // ==========================================
